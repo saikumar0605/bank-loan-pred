@@ -3,7 +3,7 @@ import os
 import logging
 from pandas import DataFrame
 from src.entity.config_entity import DataIngestionConfig
-from database.mongodb import MongoDBOperation   
+from src.configuration.mongodb import MongoDBOperation   
 from src.constant import *
 from sklearn.model_selection import train_test_split
 from typing import Tuple
