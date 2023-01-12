@@ -1,0 +1,9 @@
+from_root
+pymongo
+pandas 
+numpy
+scikit-learn
+statsmodels
+matplotlib
+PyYAML
+seaborn 

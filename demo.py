@@ -6,6 +6,12 @@ from src.configuration.mongodb import MongoDBOperation
 
 de = DataIngestion(data_ingestion_config=DataIngestionConfig(), mongo_op=MongoDBOperation())
 
-data = de.get_data_from_mongo()
+data_ingestion_artifacts = de.initiate_data_ingestion()
 
-print(data)
+
+# from src.pipline.train_pipeline import TrainPipeline
+
+
+# if __name__ == '__main__':
+    
+#     TrainPipeline().run_pipeline()

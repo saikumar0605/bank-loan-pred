@@ -1,0 +1,16 @@
+train_model:
+  LogisticRegression:
+    random_state:
+      - 42
+    max_iter:
+      - 120
+
+  DecisionTreeRegression:
+    random_state:
+      - 42
+    max_depth:
+      - 5
+    min_samples_split:
+      - 2
+    min_samples_leaf:
+      - 1
