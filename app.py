@@ -8,7 +8,7 @@ from fastapi.templating import Jinja2Templates
 
 from src.utils.MainUtils import MainUtils
 
-from src.components.model_predictor import CarPricePredictor, CarData
+from src.components.model_predictor import LoanstatusPredictor, bankData
 from src.constant import APP_HOST, APP_PORT
 from src.pipline.train_pipeline import TrainPipeline
 
