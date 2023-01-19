@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from from_root import from_root
 from src.utils.MainUtils import MainUtils
 from src.constant import *
+from src.configuration.s3_operations import S3Operation
 import os
 
 

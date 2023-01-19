@@ -6,10 +6,11 @@ import numpy as np
 import pandas as pd
 from category_encoders.binary import BinaryEncoder
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.preprocessing import OneHotEncoder, StandardScaler, LabelEncoder
 from src.entity.config_entity import DataTransformationConfig
 from src.entity.artifacts_entity import DataIngestionArtifacts, DataTransformationArtifacts
 from src.exception import CustomException
+
 
 
 logger = logging.getLogger(__name__)
@@ -33,18 +34,22 @@ class DataTransformation:
             numerical_columns = self.data_transformation_config.SCHEMA_CONFIG["numerical_columns"]
             onehot_columns = self.data_transformation_config.SCHEMA_CONFIG["onehot_columns"]
             binary_columns = self.data_transformation_config.SCHEMA_CONFIG["binary_columns"]
+            label_columns = self.data_transformation_config.SCHEMA_CONFIG["target_column"]
+        
             logger.info(
                 "Got numerical cols,one hot cols,binary cols from schema config"
             )
             numeric_transformer = StandardScaler()
             oh_transformer = OneHotEncoder(handle_unknown='ignore')
             binary_transformer = BinaryEncoder()
+            label_transformer = LabelEncoder()
             logger.info("Initialized StandardScaler,OneHotEncoder,BinaryEncoder")
             preprocessor = ColumnTransformer(
                 [
                     ("OneHotEncoder", oh_transformer, onehot_columns),
                     ("BinaryEncoder", binary_transformer, binary_columns),
                     ("StandardScaler", numeric_transformer, numerical_columns),
+                    ("LabelEncoder", label_transformer, label_columns)
                 ]
             )
             logger.info("Created preprocessor object from ColumnTransformer")

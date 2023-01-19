@@ -10,7 +10,7 @@ from src.exception import CustomException
 
 logger = logging.getLogger(__name__)
 
-class CarPriceModel:
+class bankModel:
     def __init__(self, preprocessing_object: object, trained_model_object: object):
         self.preprocessing_object = preprocessing_object
         self.trained_model_object = trained_model_object
@@ -93,7 +93,7 @@ class ModelTrainer:
             if best_model_score >= base_model_score:
                 self.model_trainer_config.UTILS.update_model_score(best_model_score)
                 logger.info("Updating model score in yaml file")
-                carprice_model = CarPriceModel(preprocessing_obj, best_model)
+                carprice_model = bankModel(preprocessing_obj, best_model)
                 logger.info(
                     "Created banking model object with preprocessor and model"
                 )
