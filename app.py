@@ -6,10 +6,12 @@ from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+
 from src.utils.MainUtils import MainUtils
 
 from src.components.model_predictor import LoanstatusPredictor, bankData
 from src.constant import APP_HOST, APP_PORT
+
 from src.pipline.train_pipeline import TrainPipeline
 
 app = FastAPI()
@@ -46,7 +48,7 @@ class DataForm:
         self.Loan_Status: Optional[str] = None
         
 
-    async def get_car_data(self):
+    async def get_bank_data(self):
         form =  await self.request.form()
         self.Gender = form.get("Gender")
         self.Married = form.get("Married")
@@ -79,10 +81,8 @@ async def predictGetRouteClient(request: Request):
     try:
         utils = MainUtils()
 
-        car_list = utils.get_car_list()
-
         return templates.TemplateResponse(
-            "src.html",{"request": request, "context": "Rendering", "car_list": car_list})
+            "bank.html",{"request": request, "context": "Rendering"})
 
     except Exception as e:
         return Response(f"Error Occurred! {e}")
@@ -91,11 +91,11 @@ async def predictGetRouteClient(request: Request):
 async def predictRouteClient(request: Request):
     try:
         utils = MainUtils()
-        car_list = utils.get_car_list()
+        bankData = utils.get_Bank_list()
         form = DataForm(request)
-        await form.get_car_data()
+        await form.get_bank_data()
         
-        src_data = CarData(Gender= form.Gender, 
+        bankData = bankData(Gender= form.Gender, 
                                    Married= form.Married, 
                                    Depender= form.Depender, 
                                    Education= form.Education, 
@@ -107,13 +107,13 @@ async def predictRouteClient(request: Request):
                                    Credit_History = form.Credit_History
                                    )
         
-        src_df = src_data.get_carprice_input_data_frame()
-        src_predictor = CarPricePredictor()
+        src_df = bankData.get_bankdata_input_data_frame()
+        src_predictor = LoanstatusPredictor()
         src_value = round(src_predictor.predict(X=src_df)[0], 2)
 
         return templates.TemplateResponse(
-            "src.html",
-            {"request": request, "context": src_value, "car_list": car_list}
+            "bank.html",
+            {"request": request, "context": src_value}
         )
 
     except Exception as e:

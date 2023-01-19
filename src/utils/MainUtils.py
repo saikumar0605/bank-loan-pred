@@ -182,3 +182,15 @@ class MainUtils:
 
         except Exception as e:
             raise CustomException(e, sys) from e
+
+    def get_Bank_list(self) -> List:
+        logging.info("Entered the get_car_list method of MainUtils class")
+        try:
+            with open(CONFIG_FILE_PATH) as f:
+                data =  yaml.safe_load(f)
+            Bankdata = data["Bankdata"]
+            logging.info("Exited the get_bank_data method of MainUtils class")
+            return Bankdata
+
+        except Exception as e:
+            raise CustomException(e, sys) from e
