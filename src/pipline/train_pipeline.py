@@ -58,16 +58,15 @@ class TrainPipeline:
         except Exception as e:
             raise CustomException(e, sys) from e            
 
-    def start_data_transformation(self, data_ingestion_artifact: DataIngestionArtifacts,
+    def start_data_transformation(self, data_ingestion_artifacts: DataIngestionArtifacts,
                                   data_validation_artifact: DataValidationArtifacts) -> DataTransformationArtifacts:
         """
         This method of TrainPipeline class is responsible for starting data transformation  
         """
         try:
             data_transformation = DataTransformation(
-                data_ingestion_artifact=data_ingestion_artifact,
-                data_transformation_config=self.data_transformation_config,
-                data_validation_artifact=data_validation_artifact
+                data_ingestion_artifacts=data_ingestion_artifacts,
+                data_transformation_config=self.data_transformation_config
             )
             data_transformation_artifact = (
                 data_transformation.initiate_data_transformation()
@@ -84,7 +83,7 @@ class TrainPipeline:
         try:
             data_ingestion_artifacts = self.start_data_ingestion()
             data_validation_artifact = self.start_data_validation(data_ingestion_artifacts=data_ingestion_artifacts)
-            data_transformation_artifact = self.start_data_transformation(data_ingestion_artifact=data_ingestion_artifacts, 
+            data_transformation_artifact = self.start_data_transformation(data_ingestion_artifacts=data_ingestion_artifacts, 
                                                                           data_validation_artifact=data_validation_artifact)
         except Exception as e:
             raise CustomException(e, sys) from e
