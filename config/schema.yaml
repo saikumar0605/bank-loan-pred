@@ -20,7 +20,7 @@ numerical_columns:
   - Loan_Amount_Term
   - Credit_History
 
-category_columns:
+categorical_columns:
   - Loan_ID
   - Gender
   - Married
@@ -34,4 +34,4 @@ drop_columns:
   - Loan_ID
   
 target_columns:
-  -Loan_status
+  - Loan_Status

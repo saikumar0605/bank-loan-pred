@@ -1,3 +1,4 @@
+import sys
 from fastapi import FastAPI, Request
 from typing import Optional
 from uvicorn import run as app_run
@@ -5,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-
+from src.exception import CustomException
 
 from src.utils.MainUtils import MainUtils
 
@@ -90,12 +91,12 @@ async def predictGetRouteClient(request: Request):
 @app.post("/predict")
 async def predictRouteClient(request: Request):
     try:
-        utils = MainUtils()
-        bankData = utils.get_Bank_list()
+        # utils = MainUtils()
+        # bankData = utils.get_Bank_list()
         form = DataForm(request)
         await form.get_bank_data()
         
-        bankData = bankData(Gender= form.Gender, 
+        bankdata = bankData(Gender= form.Gender, 
                                    Married= form.Married, 
                                    Depender= form.Depender, 
                                    Education= form.Education, 
@@ -107,7 +108,7 @@ async def predictRouteClient(request: Request):
                                    Credit_History = form.Credit_History
                                    )
         
-        src_df = bankData.get_bankdata_input_data_frame()
+        src_df = bankdata.get_bankdata_input_data_frame()
         src_predictor = LoanstatusPredictor()
         src_value = round(src_predictor.predict(X=src_df)[0], 2)
 
@@ -117,7 +118,7 @@ async def predictRouteClient(request: Request):
         )
 
     except Exception as e:
-        return {"status": False, "error": f"{e}"}
+        raise CustomException(e,sys) from e
 
 if __name__ == "__main__":
     app_run(app, host=APP_HOST, port=APP_PORT)

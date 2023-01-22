@@ -23,4 +23,5 @@ jinja2==3.1.2
 mypy-boto3-s3==1.24.76
 pip-chill==1.0.1
 category_encoders
+python-multipart
 -e .

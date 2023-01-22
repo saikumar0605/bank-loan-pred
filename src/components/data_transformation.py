@@ -32,9 +32,9 @@ class DataTransformation:
         )
         try:
             numerical_columns = self.data_transformation_config.SCHEMA_CONFIG["numerical_columns"]
-            onehot_columns = self.data_transformation_config.SCHEMA_CONFIG["onehot_columns"]
-            binary_columns = self.data_transformation_config.SCHEMA_CONFIG["binary_columns"]
-            label_columns = self.data_transformation_config.SCHEMA_CONFIG["target_column"]
+            # onehot_columns = self.data_transformation_config.SCHEMA_CONFIG["onehot_columns"]
+            # binary_columns = self.data_transformation_config.SCHEMA_CONFIG["binary_columns"]
+            label_columns = self.data_transformation_config.SCHEMA_CONFIG["target_columns"]
         
             logger.info(
                 "Got numerical cols,one hot cols,binary cols from schema config"
@@ -46,8 +46,6 @@ class DataTransformation:
             logger.info("Initialized StandardScaler,OneHotEncoder,BinaryEncoder")
             preprocessor = ColumnTransformer(
                 [
-                    ("OneHotEncoder", oh_transformer, onehot_columns),
-                    ("BinaryEncoder", binary_transformer, binary_columns),
                     ("StandardScaler", numeric_transformer, numerical_columns),
                     ("LabelEncoder", label_transformer, label_columns)
                 ]
@@ -93,7 +91,7 @@ class DataTransformation:
             logger.info(f"Created artifacts directory for {os.path.basename(self.data_transformation_config.DATA_TRANSFORMATION_ARTIFACTS_DIR)}")
             preprocessor = self.get_data_transformer_object()
             logger.info("Got the preprocessor object")
-            target_column_name = self.data_transformation_config.SCHEMA_CONFIG["target_column"]
+            target_column_name = self.data_transformation_config.SCHEMA_CONFIG["target_columns"]
             numerical_columns = self.data_transformation_config.SCHEMA_CONFIG["numerical_columns"]
             logger.info(
                 "Got target column name and numerical columns from schema config"
@@ -107,6 +105,7 @@ class DataTransformation:
             [self._outlier_capping(col, self.train_set) for col in continuous_columns]
             logger.info("Outlier capped in train df")
             [self._outlier_capping(col, self.test_set) for col in continuous_columns]
+            print(f"---------------{type(self.train_set.columns)}------------------")
             logger.info("Outlier capped in test df")
             input_feature_train_df = self.train_set.drop(
                 columns=[target_column_name], axis=1
